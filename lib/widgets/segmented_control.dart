@@ -2,8 +2,8 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/material.dart';
 import 'package:pos_portal/utils/colors.dart';
 
-class segmentedControl extends StatelessWidget {
-  const segmentedControl({
+class SegmentedControl extends StatelessWidget {
+  const SegmentedControl({
     super.key,
   });
 

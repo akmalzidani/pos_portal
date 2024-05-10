@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class cardWallet extends StatefulWidget {
-  const cardWallet({
+class CardWallet extends StatefulWidget {
+  const CardWallet({
     super.key,
   });
 
   @override
-  State<cardWallet> createState() => _cardWalletState();
+  State<CardWallet> createState() => _CardWalletState();
 }
 
-class _cardWalletState extends State<cardWallet> {
+class _CardWalletState extends State<CardWallet> {
   @override
   Widget build(BuildContext context) {
     return Stack(

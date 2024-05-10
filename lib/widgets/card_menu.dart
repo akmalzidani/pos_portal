@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/utils/colors.dart';
 
-class cardMenu extends StatefulWidget {
-  const cardMenu({
+class CardMenu extends StatefulWidget {
+  const CardMenu({
     super.key,
   });
 
   @override
-  State<cardMenu> createState() => _cardMenuState();
+  State<CardMenu> createState() => _CardMenuState();
 }
 
-class _cardMenuState extends State<cardMenu> {
+class _CardMenuState extends State<CardMenu> {
   @override
   Widget build(BuildContext context) {
     return Padding(

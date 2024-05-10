@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/utils/colors.dart';
 
-class buttonDefault extends StatelessWidget {
+class ButtonDefault extends StatelessWidget {
   final String title;
   final bool isFilled;
 
-  buttonDefault({
+  ButtonDefault({
     super.key,
     this.isFilled = false, // Tetapkan nilai default di sini
     required this.title,

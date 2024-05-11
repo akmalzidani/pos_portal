@@ -7,12 +7,7 @@ AppBar topBar(
     {required BuildContext context,
     required String title,
     bool isNeedActions = false,
-    bool isCanBack = true}) {
-  if (!isCanBack) {
-    isNeedActions = true;
-  } else {
-    isNeedActions = false;
-  }
+    bool isCanBack = false}) {
   return AppBar(
     centerTitle: true,
     leading: isCanBack

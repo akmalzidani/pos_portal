@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/utils/colors.dart';
 
 class CardAction extends StatelessWidget {
+  final bool isImport;
   const CardAction({
     super.key,
+    this.isImport = false,
   });
 
   @override
@@ -19,8 +21,8 @@ class CardAction extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              '5 Mei - 11 Mei 2024',
+            Text(
+              isImport ? 'Import Excel' : '5 Mei - 11 Mei 2024',
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w600,
@@ -31,7 +33,9 @@ class CardAction extends StatelessWidget {
             IconButton(
               onPressed: () {},
               icon: SvgPicture.asset(
-                'assets/svg/icon_calendar.svg',
+                isImport
+                    ? 'assets/svg/icon_export.svg'
+                    : 'assets/svg/icon_calendar.svg',
                 width: 30,
                 height: 30,
               ),

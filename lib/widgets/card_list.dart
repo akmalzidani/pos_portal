@@ -14,6 +14,15 @@ class CardList extends StatefulWidget {
 }
 
 class _CardListState extends State<CardList> {
+  late List<bool> isClickedList;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the isClickedList with default values
+    isClickedList = List.generate(10, (index) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,34 +42,43 @@ class _CardListState extends State<CardList> {
                 borderRadius: BorderRadius.circular(10),
               ),
               color: MyColors.secondaryDisabled,
-              child: ListTile(
-                title: Text(
-                  itemName,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    isClickedList[index] = !isClickedList[index];
+                  });
+                },
+                child: ListTile(
+                  title: Text(
+                    itemName,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  itemPrice,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                    color: MyColors.primary,
+                  subtitle: Text(
+                    itemPrice,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: MyColors.primary,
+                    ),
                   ),
-                ),
-                trailing: SizedBox(
-                  width: 100,
-                  child: Counter(
-                    initialValue: widget.jumlahItem,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.jumlahItem = value;
-                      });
-                    },
-                  ),
+                  trailing: isClickedList[index]
+                      ? SizedBox(
+                          width: 100,
+                          child: Counter(
+                            initialValue: widget.jumlahItem,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.jumlahItem = value;
+                              });
+                            },
+                          ),
+                        )
+                      : SizedBox(),
                 ),
               ),
             ),

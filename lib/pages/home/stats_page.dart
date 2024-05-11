@@ -19,11 +19,7 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(
-        context: context,
-        title: 'Statistik',
-        isCanBack: false,
-      ),
+      appBar: topBar(context: context, title: 'Statistik', isNeedActions: true),
       body: BodyTemplate(
           child: Column(
         children: [

@@ -3,6 +3,7 @@ import 'package:pos_portal/pages/home/home_page.dart';
 import 'package:pos_portal/pages/home/new_transaction_page.dart';
 import 'package:pos_portal/pages/home/stats_page.dart';
 import 'package:pos_portal/pages/product/product_page.dart';
+import 'package:pos_portal/pages/product/settings_page.dart';
 
 void main() {
   runApp(const MainApp());

@@ -13,40 +13,39 @@ class ProductPage extends StatefulWidget {
   State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage>
-    with SingleTickerProviderStateMixin {
-  final tabs = const[
-    Tab(
-      text: "Semua",
-    ),
-    Tab(
-      text: "Menipis",
-    ),
-    Tab(
-      text: "Terlaris",
-    ),
+class _ProductPageState extends State<ProductPage> with SingleTickerProviderStateMixin {
+  final tabs = const [
+    Tab(text: "Semua"),
+    Tab(text: "Menipis"),
+    Tab(text: "Terlaris"),
   ];
-  TabController ? _tabController;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Produk',),
+      appBar: topBar(
+        context: context,
+        title: 'Produk',
+      ),
       body: BodyTemplate(
         child: Column(
           children: [
-            CardAction(
-              isImport: true,
-            ),
-            SizedBox(height: 10,),
+            CardAction(isImport: true),
+            SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   onPressed: () {},
@@ -61,31 +60,40 @@ class _ProductPageState extends State<ProductPage>
                 ),
               ],
             ),
-            // Expanded(
-            //   child: TabBarView(
-            //     controller: _tabController,
-            //     children: [
-            //       CardHistory(),
-            //       CardHistory(),
-            //       CardHistory(),
-            //     ],
-            //   ),
-            // )
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  buildTabContent(), // Content for "Semua" tab
+                  buildTabContent(), // Content for "Menipis" tab
+                  buildTabContent(), // Content for "Terlaris" tab
+                ],
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: ButtonDefault( // Ubah ButtonDefault menjadi Button
+      floatingActionButton: ButtonDefault(
         title: 'Tambah Produk',
+      ),
+    );
+  }
+
+  Widget buildTabContent() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          CardHistory(),
+          // Add more widgets here if needed
+        ],
       ),
     );
   }
 }
 
 class CardHistory extends StatelessWidget {
-  const CardHistory({
-    Key? key,
-  }) : super(key: key);
+  const CardHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

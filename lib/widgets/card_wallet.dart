@@ -44,6 +44,7 @@ class _CardWalletState extends State<CardWallet> {
                 Padding(
                   padding: EdgeInsets.all(24),
                   child: Column(
+                      mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

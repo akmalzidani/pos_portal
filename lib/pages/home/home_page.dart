@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/pages/home/new_transaction_page.dart';
+import 'package:pos_portal/pages/home/stats_page.dart';
 import 'package:pos_portal/utils/colors.dart';
-import 'package:pos_portal/widgets/button.dart';
+import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_info.dart';
 import 'package:pos_portal/widgets/card_menu.dart';
 import 'package:pos_portal/widgets/card_wallet.dart';
@@ -24,8 +26,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BodyTemplate(child: isiHome()),
-      floatingActionButton: ButtonDefault(
+      floatingActionButton: FloatingButtonDefault(
         title: 'Tambah Transaksi',
+        actionPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewTransactionPage(),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -46,7 +54,16 @@ class isiHome extends StatelessWidget {
         CardInfo(),
         CardMenu(),
         SegmentedControl(),
-        LineChart(),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StatsPage(),
+                ),
+              );
+            },
+            child: LineChart()),
       ],
     );
   }

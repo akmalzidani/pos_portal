@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pos_portal/pages/home/stats_page.dart';
+import 'package:pos_portal/utils/colors.dart';
 
 class LineChart extends StatelessWidget {
   const LineChart({
@@ -7,10 +10,11 @@ class LineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 16),
-      child: Placeholder(
-        fallbackHeight: 250,
+      child: Container(
+        color: MyColors.neutral,
+        height: 250,
       ),
     );
   }

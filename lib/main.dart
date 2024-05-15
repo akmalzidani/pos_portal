@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/pages/home/home_page.dart';
 import 'package:pos_portal/pages/home/new_transaction_page.dart';
 import 'package:pos_portal/pages/home/stats_page.dart';
@@ -15,7 +16,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
-        body: ProductPage(),
+        body: HomePage(),
+        // bottomNavigationBar: ,
       ),
     );
   }

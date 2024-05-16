@@ -4,14 +4,17 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=3.3.4 <4.0.0"
+  sdk: ">=3.2.4 <4.0.0"
 
 dependencies:
+  currency_text_input_formatter: ^2.2.3
   custom_sliding_segmented_control: ^1.8.2
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.9
-  google_fonts: ^2.2.0 # Tambahkan versi terbaru dari google_fonts
+  google_fonts: ^6.2.1
+  persistent_bottom_nav_bar: ^5.0.2
+  sqflite:
 
 dev_dependencies:
   flutter_test:

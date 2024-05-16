@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/button.dart';
+import 'package:pos_portal/pages/product/add_product_page.dart';
+import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
@@ -125,6 +127,12 @@ class CardHistory extends StatelessWidget {
             ),
           ],
         ),
+      )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingButtonDefault(
+        title: 'Tambah Produk',
+        actionPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddProductPage())),
       ),
     );
   }

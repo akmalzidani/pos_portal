@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/pages/home/payment/payment_method_page.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_list.dart';
 import 'package:pos_portal/widgets/search_field.dart';
@@ -116,7 +117,12 @@ class CartDetail extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaymentMethodPage()),
+                );
+              },
               child: Text(
                 'Bayar',
                 style: TextStyle(

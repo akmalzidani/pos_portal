@@ -3,14 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/pages/home/new_transaction_page.dart';
+import 'package:pos_portal/pages/home/stats_page.dart';
 import 'package:pos_portal/utils/colors.dart';
-import 'package:pos_portal/widgets/button.dart';
+import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_info.dart';
 import 'package:pos_portal/widgets/card_menu.dart';
 import 'package:pos_portal/widgets/card_wallet.dart';
 import 'package:pos_portal/widgets/line_chart.dart';
 import 'package:pos_portal/widgets/segmented_control.dart';
+import 'package:pos_portal/controller/product.controller.dart';
+import 'package:pos_portal/models/product.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,12 +25,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ProductController _productController = ProductController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    List<Product> loadedProducts = await _productController.selectAll();
+    for (Product product in loadedProducts) {
+      print(product.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BodyTemplate(child: isiHome()),
-      floatingActionButton: ButtonDefault(
+      floatingActionButton: FloatingButtonDefault(
         title: 'Tambah Transaksi',
+        actionPressed: () => PersistentNavBarNavigator.pushNewScreen(
+          context,
+          screen: NewTransactionPage(),
+          withNavBar: false, // OPTIONAL VALUE. True by default.
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -42,11 +68,20 @@ class isiHome extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CardWallet(),
+        // CardWallet(),
         CardInfo(),
         CardMenu(),
         SegmentedControl(),
-        LineChart(),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StatsPage(),
+                ),
+              );
+            },
+            child: LineChart()),
       ],
     );
   }

@@ -1,0 +1,4 @@
+enum StockType {
+  unlimited,
+  limited
+}

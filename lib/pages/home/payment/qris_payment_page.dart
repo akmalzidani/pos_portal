@@ -50,7 +50,11 @@ class _QrisPaymentPageState extends State<QrisPaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Pembayaran', isCanBack: true),
+      appBar: topBar(
+        context: context,
+        title: 'Pembayaran',
+        isCanBack: true,
+      ),
       body: BodyTemplate(
         child: Column(
           children: [

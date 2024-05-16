@@ -18,7 +18,7 @@ AppBar topBar(
               color: MyColors.primary,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).popUntil(ModalRoute.withName("/"));
             },
           )
         : null,

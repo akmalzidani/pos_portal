@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/payment/payment_method_page.dart';
+import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_list.dart';
 import 'package:pos_portal/widgets/search_field.dart';
@@ -18,8 +19,11 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          topBar(context: context, title: 'Transaksi Baru', isCanBack: true),
+      appBar: topBar(
+        context: context,
+        title: 'Transaksi Baru',
+        isCanBack: true,
+      ),
       body: BodyTemplate(
         child: Column(
           children: [SearchField(), CardList()],

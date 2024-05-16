@@ -70,26 +70,28 @@ class isiHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CardWallet(),
-        CardInfo(),
-        CardMenu(),
-        SegmentedControl(),
-        GestureDetector(
-          onTap: () {
-            PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-              context,
-              settings: RouteSettings(name: Routes.statsPageRoute),
-              screen: StatsPage(),
-              withNavBar: true,
-              pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            );
-          },
-          child: LineChart(),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CardWallet(),
+          CardInfo(),
+          CardMenu(),
+          SegmentedControl(),
+          GestureDetector(
+            onTap: () {
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                settings: RouteSettings(name: Routes.statsPageRoute),
+                screen: StatsPage(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
+            child: LineChart(),
+          ),
+        ],
+      ),
     );
   }
 }

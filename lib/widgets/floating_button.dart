@@ -4,6 +4,7 @@ import 'package:pos_portal/utils/colors.dart';
 class FloatingButtonDefault extends StatelessWidget {
   final String title;
   final bool isFilled;
+  final bool isDisabled;
   final VoidCallback actionPressed;
 
   FloatingButtonDefault({
@@ -11,6 +12,7 @@ class FloatingButtonDefault extends StatelessWidget {
     this.isFilled = false, // Tetapkan nilai default di sini
     required this.title,
     required this.actionPressed,
+    this.isDisabled = false,
   });
 
   @override
@@ -23,7 +25,9 @@ class FloatingButtonDefault extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: FloatingActionButton.extended(
               elevation: 0,
-              backgroundColor: isFilled ? MyColors.primary : Colors.white,
+              backgroundColor: isFilled
+                  ? (isDisabled ? MyColors.neutral : MyColors.primary)
+                  : Colors.white,
               onPressed: actionPressed,
               label: Text(
                 title,

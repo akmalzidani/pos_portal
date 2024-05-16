@@ -64,11 +64,12 @@ class _DialogTunaiState extends State<DialogTunai> {
                         controller: inputUangDiterima,
                         label: 'Uang Diterima',
                         isDuit: true,
-                        onUangDiterimaChanged: (value) {
+                        onNilaiAngkaChanged: (value) {
                           setState(() {
                             uangDiterima = value;
                           });
                         },
+                        hintText: '0',
                       ),
                     ),
                     SizedBox(

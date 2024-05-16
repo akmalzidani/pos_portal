@@ -6,10 +6,14 @@ import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/utils/helpers.dart';
 
 class InputField extends StatefulWidget {
-  final ValueChanged<int?> onUangDiterimaChanged;
+  final ValueChanged<int?>? onNilaiAngkaChanged;
 
   final String? label;
+  final bool? isWajibIsi;
   final bool isDuit;
+  late bool inputAngka;
+  final bool? isExpanded;
+  final String hintText;
   final TextEditingController controller;
 
   InputField({
@@ -17,7 +21,11 @@ class InputField extends StatefulWidget {
     this.label = '',
     this.isDuit = false,
     required this.controller,
-    required this.onUangDiterimaChanged,
+    this.onNilaiAngkaChanged,
+    this.isExpanded,
+    this.isWajibIsi = false,
+    required this.hintText,
+    this.inputAngka = false,
   });
 
   @override
@@ -25,44 +33,62 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> {
-  final CurrencyTextInputFormatter formatter =
-      CurrencyTextInputFormatter.currency(
-    locale: 'id',
-    decimalDigits: 0,
-    symbol: 'Rp ',
-  );
-
   @override
   Widget build(BuildContext context) {
+    if (widget.isDuit) {
+      widget.inputAngka = true;
+    }
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(
+      locale: 'id',
+      decimalDigits: 0,
+      symbol: widget.isDuit ? 'Rp ' : '',
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           margin: EdgeInsets.only(bottom: (widget.label == '') ? 0 : 10),
-          child: Text(
-            widget.label ?? '',
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF525666)),
+          child: Row(
+            children: [
+              Text(
+                widget.label ?? '',
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF525666)),
+              ),
+              Text(
+                widget.isWajibIsi! ? '*' : '',
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: MyColors.error),
+              ),
+            ],
           ),
         ),
         TextFormField(
+          expands: widget.isExpanded ?? false,
           controller: widget.controller,
           cursorColor: MyColors.primary,
           keyboardType:
-              widget.isDuit ? (TextInputType.number) : TextInputType.text,
-          onChanged: (value) {
-            if (value.isNotEmpty) {
-              final valueHarga = formatter.getUnformattedValue();
-              debugPrint('valueHarga ${valueHarga.toString()}');
-              widget.onUangDiterimaChanged(valueHarga as int? ?? 0);
-            }
-          },
-          inputFormatters: widget.isDuit
+              widget.inputAngka ? (TextInputType.number) : TextInputType.text,
+          onChanged: widget.inputAngka || widget.isDuit
+              ? (value) {
+                  if (value.isNotEmpty) {
+                    final valueHarga = formatter.getUnformattedValue();
+                    debugPrint('valueHarga ${valueHarga.toString()}');
+                    widget.onNilaiAngkaChanged!(valueHarga as int? ?? 0);
+                  }
+                }
+              : null,
+          inputFormatters: widget.isDuit || widget.inputAngka
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly,
                   formatter
@@ -86,7 +112,7 @@ class _InputFieldState extends State<InputField> {
                 color: MyColors.neutral,
               ),
             ),
-            hintText: '0',
+            hintText: widget.hintText,
             hintStyle: TextStyle(
               color: MyColors.neutral,
             ),

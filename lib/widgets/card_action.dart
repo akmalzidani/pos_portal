@@ -4,9 +4,11 @@ import 'package:pos_portal/utils/colors.dart';
 
 class CardAction extends StatelessWidget {
   final bool isImport;
+  final VoidCallback? onPressed;
   const CardAction({
     super.key,
     this.isImport = false,
+    this.onPressed,
   });
 
   @override
@@ -31,7 +33,7 @@ class CardAction extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: onPressed ?? () {},
               icon: SvgPicture.asset(
                 isImport
                     ? 'assets/svg/icon_export.svg'

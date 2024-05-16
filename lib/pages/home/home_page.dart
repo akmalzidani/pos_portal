@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/new_transaction_page.dart';
 import 'package:pos_portal/pages/home/stats_page.dart';
@@ -28,11 +29,11 @@ class _HomePageState extends State<HomePage> {
       body: BodyTemplate(child: isiHome()),
       floatingActionButton: FloatingButtonDefault(
         title: 'Tambah Transaksi',
-        actionPressed: () => Navigator.push(
+        actionPressed: () => PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(
-            builder: (context) => NewTransactionPage(),
-          ),
+          screen: NewTransactionPage(),
+          withNavBar: false, // OPTIONAL VALUE. True by default.
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

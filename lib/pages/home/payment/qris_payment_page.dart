@@ -88,7 +88,7 @@ class _QrisPaymentPageState extends State<QrisPaymentPage> {
             Container(
               margin: EdgeInsets.only(right: 8),
               child: SvgPicture.asset(
-                'assets/svg/icon_refresh.svg',
+                ' icon_refresh.svg',
                 width: 16,
               ),
             ),

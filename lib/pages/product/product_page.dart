@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/button.dart';
@@ -7,6 +6,8 @@ import 'package:pos_portal/pages/product/add_product_page.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/topbar.dart';
+import '../../utils/dummy_product.dart';
+import '../../widgets/card_list_product.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -33,6 +34,20 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  List<DummyProduct> filterProducts(String criteria) {
+    switch (criteria) {
+      case 'Menipis':
+        return listProduct.where((product) => int.parse(product.stock) <= 10).toList();
+      case 'Terlaris':
+      // Mengurutkan daftar produk berdasarkan jumlah terjualnya
+        listProduct.sort((a, b) => int.parse(b.terjual).compareTo(int.parse(a.terjual)));
+        return listProduct;
+      case 'Semua':
+      default:
+        return listProduct;
+    }
   }
 
   @override
@@ -66,9 +81,9 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  buildTabContent(), // Content for "Semua" tab
-                  buildTabContent(), // Content for "Menipis" tab
-                  buildTabContent(), // Content for "Terlaris" tab
+                  buildTabContent('Semua'),  // Content for "Semua" tab
+                  buildTabContent('Menipis'), // Content for "Menipis" tab
+                  buildTabContentTerlaris('Terlaris'), // Content for "Terlaris" tab
                 ],
               ),
             ),
@@ -77,63 +92,36 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ButtonDefault(
-        title: 'Tambah Produk',
+        title: 'Tambah Produk', onPressed: () {},
       ),
     );
   }
 
-  Widget buildTabContent() {
+  Widget buildTabContent(String criteria) {
+    List<DummyProduct> products = filterProducts(criteria);
     return SingleChildScrollView(
       child: Column(
         children: [
-          CardHistory(),
-          // Add more widgets here if needed
+          ... products.map((product) => CardProduct(product: product)).toList(),
+          SizedBox(
+            height: 100,
+          )
         ],
       ),
     );
   }
-}
 
-class CardHistory extends StatelessWidget {
-  const CardHistory({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(top: 16),
-      elevation: 0,
-      color: MyColors.info,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              'assets/svg/icon_laris.svg',
-              width: 20,
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: const Text(
-                'Lihat Produk Terlarismu',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
-      )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingButtonDefault(
-        title: 'Tambah Produk',
-        actionPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddProductPage())),
-      ),
+  Widget buildTabContentTerlaris(String criteria) {
+    List<DummyProduct> products = filterProducts(criteria);
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ... products.map((product) => CardProductTerlaris(product: product)).toList(),
+          SizedBox(
+            height: 100,
+          )
+        ],
+      )
     );
   }
 }

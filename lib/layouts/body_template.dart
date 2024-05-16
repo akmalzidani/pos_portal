@@ -12,13 +12,12 @@ class BodyTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: child,
-          ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: child,
         ),
       ),
     );
   }
 }
+

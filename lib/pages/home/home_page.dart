@@ -14,6 +14,8 @@ import 'package:pos_portal/widgets/card_menu.dart';
 import 'package:pos_portal/widgets/card_wallet.dart';
 import 'package:pos_portal/widgets/line_chart.dart';
 import 'package:pos_portal/widgets/segmented_control.dart';
+import 'package:pos_portal/controller/product.controller.dart';
+import 'package:pos_portal/models/product.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +25,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ProductController _productController = ProductController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    List<Product> loadedProducts = await _productController.selectAll();
+    for (Product product in loadedProducts) {
+      print(product.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +68,7 @@ class isiHome extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CardWallet(),
+        // CardWallet(),
         CardInfo(),
         CardMenu(),
         SegmentedControl(),

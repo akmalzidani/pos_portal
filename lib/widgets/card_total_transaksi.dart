@@ -7,12 +7,14 @@ class CardTotalTransaksi extends StatelessWidget {
   final bool isQris;
   final int transactionId;
   final int totalTransaksi;
+  final String? title;
 
   CardTotalTransaksi(
       {required this.transactionId,
       super.key,
       this.isQris = false,
-      required this.totalTransaksi});
+      required this.totalTransaksi,
+      this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class CardTotalTransaksi extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    textBiasa(title: 'Total Transaksi'),
+                    textBiasa(title: title ?? 'Total Transaksi'),
                     Padding(
                       padding: isQris
                           ? const EdgeInsets.symmetric(vertical: 4)

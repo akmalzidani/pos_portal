@@ -7,7 +7,6 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/new_transaction_page.dart';
 import 'package:pos_portal/pages/home/stats_page.dart';
-import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_info.dart';

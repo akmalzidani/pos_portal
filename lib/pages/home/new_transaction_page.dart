@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
-import 'package:pos_portal/pages/home/payment/payment_method_page.dart';
-import 'package:pos_portal/route/route.dart';
+import 'package:pos_portal/pages/home/payment/detail_payment_page.dart';
 import 'package:pos_portal/utils/colors.dart';
+import 'package:pos_portal/utils/helpers.dart';
 import 'package:pos_portal/widgets/card_list.dart';
 import 'package:pos_portal/widgets/search_field.dart';
 import 'package:pos_portal/widgets/topbar.dart';
@@ -16,6 +16,16 @@ class NewTransactionPage extends StatefulWidget {
 }
 
 class _NewTransactionPageState extends State<NewTransactionPage> {
+  int selectedItemsCount = 0;
+  int totalTransaksi = 0;
+
+  void updateSelectedItemsCount(int count, int total) {
+    setState(() {
+      selectedItemsCount = count;
+      totalTransaksi = total;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
@@ -32,20 +42,30 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
               controller: searchController,
               isAdaBatal: false,
             ),
-            CardList()
+            CardList(
+              onSelectionChanged: updateSelectedItemsCount,
+            ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CartDetail(),
+      floatingActionButton: CartDetail(
+        selectedItemsCount: selectedItemsCount,
+        totalTransaksi: totalTransaksi,
+      ),
     );
   }
 }
 
 class CartDetail extends StatelessWidget {
+  final int selectedItemsCount;
+  final int totalTransaksi;
+
   const CartDetail({
-    super.key,
-  });
+    Key? key,
+    required this.selectedItemsCount,
+    required this.totalTransaksi,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +102,7 @@ class CartDetail extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '1',
+                            '$selectedItemsCount',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 11,
@@ -108,7 +128,7 @@ class CartDetail extends StatelessWidget {
                 ),
               ),
               Text(
-                'Rp 0',
+                'Rp ${formatRupiah(totalTransaksi)}',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -121,19 +141,28 @@ class CartDetail extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.24,
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(MyColors.primary),
+                backgroundColor: MaterialStateProperty.all(
+                    selectedItemsCount > 0
+                        ? MyColors.primary
+                        : MyColors.neutral),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PaymentMethodPage()),
-                );
-              },
+              onPressed: selectedItemsCount > 0
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailPaymentPage(
+                                  totalTransaksi: totalTransaksi,
+                                  transactionId: 123456,
+                                )),
+                      );
+                    }
+                  : null,
               child: Text(
                 'Bayar',
                 style: TextStyle(

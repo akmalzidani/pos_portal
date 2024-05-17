@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
-import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/button.dart';
 import 'package:pos_portal/pages/product/add_product_page.dart';

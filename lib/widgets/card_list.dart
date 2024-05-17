@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/utils/colors.dart';
+import 'package:pos_portal/utils/helpers.dart';
 import 'package:pos_portal/widgets/counter.dart';
 
 class CardList extends StatefulWidget {
-  late int jumlahItem = 1;
+  final Function(int, int) onSelectionChanged;
 
   CardList({
-    super.key,
-  });
+    Key? key,
+    required this.onSelectionChanged,
+  }) : super(key: key);
 
   @override
   State<CardList> createState() => _CardListState();
@@ -15,12 +17,28 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   late List<bool> isClickedList;
+  late List<int> itemQuantities;
+  final int itemPrice = 10000;
+  int selectedCount = 0;
+  int totalAmount = 0;
 
   @override
   void initState() {
     super.initState();
     // Initialize the isClickedList with default values
     isClickedList = List.generate(10, (index) => false);
+    itemQuantities = List.generate(10, (index) => 1);
+  }
+
+  void updateSelectedCount() {
+    selectedCount = isClickedList.where((clicked) => clicked).length;
+    totalAmount = 0;
+    for (int i = 0; i < isClickedList.length; i++) {
+      if (isClickedList[i]) {
+        totalAmount += itemPrice * itemQuantities[i];
+      }
+    }
+    widget.onSelectionChanged(selectedCount, totalAmount);
   }
 
   @override
@@ -30,9 +48,7 @@ class _CardListState extends State<CardList> {
       height: MediaQuery.of(context).size.height * 0.72,
       child: ListView.builder(
         itemBuilder: (context, index) {
-          // Replace this with your actual data retrieval logic
           final String itemName = "Es Lemon Tea";
-          final String itemPrice = "Rp 10.000";
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -46,6 +62,7 @@ class _CardListState extends State<CardList> {
                 onTap: () {
                   setState(() {
                     isClickedList[index] = !isClickedList[index];
+                    updateSelectedCount();
                   });
                 },
                 child: ListTile(
@@ -58,7 +75,7 @@ class _CardListState extends State<CardList> {
                     ),
                   ),
                   subtitle: Text(
-                    itemPrice,
+                    'Rp ${formatRupiah(itemPrice)}',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w700,
@@ -70,10 +87,11 @@ class _CardListState extends State<CardList> {
                       ? SizedBox(
                           width: 100,
                           child: Counter(
-                            initialValue: widget.jumlahItem,
+                            initialValue: itemQuantities[index],
                             onChanged: (value) {
                               setState(() {
-                                widget.jumlahItem = value;
+                                itemQuantities[index] = value;
+                                updateSelectedCount();
                               });
                             },
                           ),

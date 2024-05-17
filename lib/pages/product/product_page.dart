@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/button.dart';
 import 'package:pos_portal/pages/product/add_product_page.dart';
@@ -15,7 +17,8 @@ class ProductPage extends StatefulWidget {
   State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> with SingleTickerProviderStateMixin {
+class _ProductPageState extends State<ProductPage>
+    with SingleTickerProviderStateMixin {
   final tabs = const [
     Tab(text: "Semua"),
     Tab(text: "Menipis"),
@@ -45,8 +48,6 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
       body: BodyTemplate(
         child: Column(
           children: [
-            CardAction(isImport: true),
-            SizedBox(height: 10),
             Row(
               children: [
                 IconButton(
@@ -76,8 +77,17 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: ButtonDefault(
+      floatingActionButton: FloatingButtonDefault(
+        heroTag: "product",
         title: 'Tambah Produk',
+        actionPressed: () {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: AddProductPage(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        },
       ),
     );
   }
@@ -127,12 +137,6 @@ class CardHistory extends StatelessWidget {
             ),
           ],
         ),
-      )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingButtonDefault(
-        title: 'Tambah Produk',
-        actionPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddProductPage())),
       ),
     );
   }

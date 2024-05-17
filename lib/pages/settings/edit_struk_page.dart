@@ -10,18 +10,21 @@ class EditStruk extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: topBar(context: context, title: 'Edit Struk'),
       body: BodyTemplate(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 32,),
+            SizedBox(
+              height: 32,
+            ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Konten berada di kiri
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Konten berada di kiri
               children: [
-                Text('Masukkan Header',
+                Text(
+                  'Masukkan Header',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
@@ -31,7 +34,8 @@ class EditStruk extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 CustomTextField(
-                  controller: TextEditingController(), // Anda perlu menambahkan controller
+                  controller:
+                      TextEditingController(), // Anda perlu menambahkan controller
                   labelText: 'Isikan Header Disini',
                   hintText: 'Isikan Header Disini',
                 ),
@@ -39,9 +43,11 @@ class EditStruk extends StatelessWidget {
             ),
             SizedBox(height: 20), // Spasi antara kolom
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Konten berada di kiri
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Konten berada di kiri
               children: [
-                Text('Masukkan Footer',
+                Text(
+                  'Masukkan Footer',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
@@ -51,7 +57,8 @@ class EditStruk extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 CustomTextField(
-                  controller: TextEditingController(), // Anda perlu menambahkan controller
+                  controller:
+                      TextEditingController(), // Anda perlu menambahkan controller
                   labelText: 'Isikan Footer Disini',
                   hintText: 'Isikan Footer Disini',
                 ),
@@ -62,7 +69,6 @@ class EditStruk extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ButtonSave(title: 'Simpan'),
-
     );
   }
 }

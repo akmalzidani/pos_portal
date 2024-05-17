@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/line_chart.dart';
@@ -19,7 +20,12 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Statistik', isNeedActions: true),
+      appBar: topBar(
+        context: context,
+        title: 'Statistika',
+        isNeedActions: true,
+        isCanBack: true,
+      ),
       body: BodyTemplate(
           child: Column(
         children: [

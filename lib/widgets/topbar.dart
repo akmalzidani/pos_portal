@@ -7,6 +7,7 @@ AppBar topBar(
     {required BuildContext context,
     required String title,
     bool isNeedActions = false,
+    bool popTilDrop = false,
     bool isCanBack = false}) {
   return AppBar(
     centerTitle: true,
@@ -18,7 +19,11 @@ AppBar topBar(
               color: MyColors.primary,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              if (popTilDrop) {
+                Navigator.of(context).popUntil(ModalRoute.withName("/"));
+              } else {
+                Navigator.of(context).pop();
+              }
             },
           )
         : null,

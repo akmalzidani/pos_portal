@@ -7,6 +7,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/new_transaction_page.dart';
 import 'package:pos_portal/pages/home/stats_page.dart';
+import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_info.dart';
@@ -42,18 +43,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BodyTemplate(child: isiHome()),
-      floatingActionButton: FloatingButtonDefault(
-        title: 'Tambah Transaksi',
-        actionPressed: () => PersistentNavBarNavigator.pushNewScreen(
-          context,
-          screen: NewTransactionPage(),
-          withNavBar: false, // OPTIONAL VALUE. True by default.
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+    return MaterialApp(
+      home: Scaffold(
+        body: BodyTemplate(child: isiHome()),
+        floatingActionButton: FloatingButtonDefault(
+          heroTag: "home",
+          title: 'Tambah Transaksi',
+          actionPressed: () => PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: NewTransactionPage(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -65,24 +69,27 @@ class isiHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // CardWallet(),
-        CardInfo(),
-        CardMenu(),
-        SegmentedControl(),
-        GestureDetector(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CardWallet(),
+          CardInfo(),
+          CardMenu(),
+          SegmentedControl(),
+          GestureDetector(
             onTap: () {
-              Navigator.push(
+              PersistentNavBarNavigator.pushNewScreen(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => StatsPage(),
-                ),
+                screen: StatsPage(),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );
             },
-            child: LineChart()),
-      ],
+            child: LineChart(),
+          ),
+        ],
+      ),
     );
   }
 }

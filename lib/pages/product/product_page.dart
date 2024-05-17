@@ -78,18 +78,15 @@ class _ProductPageState extends State<ProductPage>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingButtonDefault(
+        heroTag: "product",
         title: 'Tambah Produk',
         actionPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AddProductPage();
-          }));
-          // PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-          //   context,
-          //   settings: RouteSettings(name: Routes.addEditProductPageRoute),
-          //   screen: AddProductPage(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: AddProductPage(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
       ),
     );

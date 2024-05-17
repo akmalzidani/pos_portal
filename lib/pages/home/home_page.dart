@@ -47,11 +47,10 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         body: BodyTemplate(child: isiHome()),
         floatingActionButton: FloatingButtonDefault(
+          heroTag: "home",
           title: 'Tambah Transaksi',
-          actionPressed: () =>
-              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+          actionPressed: () => PersistentNavBarNavigator.pushNewScreen(
             context,
-            settings: RouteSettings(name: Routes.newTransactionPageRoute),
             screen: NewTransactionPage(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
@@ -80,9 +79,8 @@ class isiHome extends StatelessWidget {
           SegmentedControl(),
           GestureDetector(
             onTap: () {
-              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+              PersistentNavBarNavigator.pushNewScreen(
                 context,
-                settings: RouteSettings(name: Routes.statsPageRoute),
                 screen: StatsPage(),
                 withNavBar: true,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,

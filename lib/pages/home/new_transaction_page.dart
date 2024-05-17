@@ -18,6 +18,7 @@ class NewTransactionPage extends StatefulWidget {
 class _NewTransactionPageState extends State<NewTransactionPage> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: topBar(
         context: context,
@@ -26,7 +27,13 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
       ),
       body: BodyTemplate(
         child: Column(
-          children: [SearchField(), CardList()],
+          children: [
+            SearchField(
+              controller: searchController,
+              isAdaBatal: true,
+            ),
+            CardList()
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

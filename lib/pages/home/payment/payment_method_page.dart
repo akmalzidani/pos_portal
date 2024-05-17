@@ -63,9 +63,9 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
             ),
           );
         }
-        if (title == 'Tunai') {
-          _showDialogTunai();
-        }
+        // if (title == 'Tunai') {
+        //   _showDialogTunai();
+        // }
       },
       child: Card(
         margin: const EdgeInsets.only(top: 16),

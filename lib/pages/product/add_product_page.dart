@@ -30,7 +30,6 @@ class _AddProductPageState extends State<AddProductPage> {
     return Scaffold(
       appBar: topBar(context: context, title: 'Tambah Produk', isCanBack: true),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             Padding(
@@ -141,29 +140,32 @@ class _AddProductPageState extends State<AddProductPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingButtonDefault(
-        title: 'Simpan',
-        actionPressed: (namaProdukController.text.isNotEmpty &&
-                hargaProdukController.text.isNotEmpty)
-            ? (_character == JenisStokBarang.terbatas &&
-                    stokProdukController.text.isNotEmpty)
-                ? () {}
-                : (_character == JenisStokBarang.tidakterbatas)
-                    ? () {}
-                    : () {}
-            : () {},
-        isFilled: true,
-        isDisabled: (namaProdukController.text.isNotEmpty &&
-                hargaProdukController.text.isNotEmpty)
-            ? (_character == JenisStokBarang.terbatas &&
-                    stokProdukController.text.isNotEmpty)
-                ? false
-                : (_character == JenisStokBarang.tidakterbatas)
-                    ? false
-                    : true
-            : true,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: FloatingButtonDefault(
+          title: 'Simpan',
+          heroTag: "addProduct",
+          actionPressed: (namaProdukController.text.isNotEmpty &&
+                  hargaProdukController.text.isNotEmpty)
+              ? (_character == JenisStokBarang.terbatas &&
+                      stokProdukController.text.isNotEmpty)
+                  ? () {}
+                  : (_character == JenisStokBarang.tidakterbatas)
+                      ? () {}
+                      : () {}
+              : () {},
+          isFilled: true,
+          isDisabled: (namaProdukController.text.isNotEmpty &&
+                  hargaProdukController.text.isNotEmpty)
+              ? (_character == JenisStokBarang.terbatas &&
+                      stokProdukController.text.isNotEmpty)
+                  ? false
+                  : (_character == JenisStokBarang.tidakterbatas)
+                      ? false
+                      : true
+              : true,
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 

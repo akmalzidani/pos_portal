@@ -36,7 +36,7 @@ class _EditWebhookState extends State<EditWebhook> {
               crossAxisAlignment: CrossAxisAlignment.start, // Konten berada di kiri
               children: [
                 Text(
-                  'Masukkan Header',
+                  'Masukkan link WebHook',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,

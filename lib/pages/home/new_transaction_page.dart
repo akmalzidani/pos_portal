@@ -30,7 +30,7 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
           children: [
             SearchField(
               controller: searchController,
-              isAdaBatal: true,
+              isAdaBatal: false,
             ),
             CardList()
           ],

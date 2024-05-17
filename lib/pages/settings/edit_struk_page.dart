@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/layouts/body_template.dart';
-import 'package:pos_portal/widgets/custom_text_field.dart';
 import 'package:pos_portal/widgets/save_button.dart';
 import 'package:pos_portal/widgets/topbar.dart';
+
+import '../../widgets/customTextField.dart';
 
 class EditStruk extends StatelessWidget {
   const EditStruk({Key? key}) : super(key: key);

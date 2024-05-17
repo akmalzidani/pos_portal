@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/layouts/body_template.dart';
-import 'package:pos_portal/widgets/save_button.dart';
+import 'package:pos_portal/widgets/button.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
 import '../../widgets/customTextField.dart';
 
-class EditStruk extends StatelessWidget {
+class EditStruk extends StatefulWidget {
   const EditStruk({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  _EditStrukState createState() => _EditStrukState();
+}
 
+class _EditStrukState extends State<EditStruk> {
+  final TextEditingController _headerController = TextEditingController();
+  final TextEditingController _footerController = TextEditingController();
+
+  @override
+  void dispose() {
+    _headerController.dispose();
+    _footerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: topBar(context: context, title: 'Edit Struk'),
       body: BodyTemplate(
@@ -21,7 +35,8 @@ class EditStruk extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start, // Konten berada di kiri
               children: [
-                Text('Masukkan Header',
+                Text(
+                  'Masukkan Header',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
@@ -31,7 +46,7 @@ class EditStruk extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 CustomTextField(
-                  controller: TextEditingController(), // Anda perlu menambahkan controller
+                  controller: _headerController,
                   labelText: 'Isikan Header Disini',
                   hintText: 'Isikan Header Disini',
                 ),
@@ -41,7 +56,8 @@ class EditStruk extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start, // Konten berada di kiri
               children: [
-                Text('Masukkan Footer',
+                Text(
+                  'Masukkan Footer',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w600,
@@ -51,7 +67,7 @@ class EditStruk extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 CustomTextField(
-                  controller: TextEditingController(), // Anda perlu menambahkan controller
+                  controller: _footerController,
                   labelText: 'Isikan Footer Disini',
                   hintText: 'Isikan Footer Disini',
                 ),
@@ -61,8 +77,13 @@ class EditStruk extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ButtonSave(title: 'Simpan'),
-
+      floatingActionButton: ButtonDefault(
+        title: 'Simpan',
+        onPressed: () {
+          // Handle the save action
+          // You can access the text from the controllers using _headerController.text and _footerController.text
+        },
+      ),
     );
   }
 }

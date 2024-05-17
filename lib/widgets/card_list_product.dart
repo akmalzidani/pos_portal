@@ -72,33 +72,38 @@ class CardProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? stock = int.tryParse(product.stock);
-    return Card(
-      margin: const EdgeInsets.only(top: 16),
-      elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ListTile(
-          title: Text(
-            product.name,
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-              color: Colors.black,
+    return Column(
+      children: [
+        Card(
+          margin: const EdgeInsets.only(top: 5),
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: ListTile(
+              title: Text(
+                product.name,
+                style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+              ),
+              subtitle: Text(
+                '${product.harga}',
+                style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: MyColors.primary,
+                ),
+              ),
+              trailing: _trailingWidget(stock!),
             ),
           ),
-          subtitle: Text(
-            '${product.harga}',
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-              color: MyColors.primary,
-            ),
-          ),
-          trailing: _trailingWidget(stock!),
         ),
-      ),
+        Divider(),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/counter.dart';
-
+import 'package:pos_portal/models/Product.dart';
 class CardList extends StatefulWidget {
   late int jumlahItem = 1;
 
@@ -51,7 +51,7 @@ class _CardListState extends State<CardList> {
                 child: ListTile(
                   title: Text(
                     itemName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
@@ -59,7 +59,7 @@ class _CardListState extends State<CardList> {
                   ),
                   subtitle: Text(
                     itemPrice,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w700,
                       fontSize: 14,

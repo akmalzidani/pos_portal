@@ -27,13 +27,12 @@ class DBConfig {
     await db.execute('''
       CREATE TABLE Product(
         id INTEGER PRIMARY KEY,
-        item_code TEXT NOT NULL,
         name TEXT NOT NULL,
         price REAL NOT NULL,
         stock_type TINYINT NOT NULL DEFAULT 0,
-        stock INTEGER NOT NULL,
-        created_time TEXT NOT NULL,
-        updated_time TEXT NOT NULL
+        stock INTEGER NULL DEFAULT NULL,
+        created_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
     ''');
     // - stock_type: 0 = unlimited, 1 = limited
@@ -45,12 +44,12 @@ class DBConfig {
         nominal_payment REAL NOT NULL,
         total REAL NOT NULL,
         change REAL NOT NULL,
-        discType TINYINT NOT NULL,
-        discValue REAL NOT NULL,
-        created_time TEXT NOT NULL,
-        updated_time TEXT NOT NULL
+        status TINYINT NOT NULL DEFAULT 0,
+        created_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
     ''');
+    // - status: 0 = pending, 1 = paid, 2 = failed/cancelled
 
     // Transaction Detail Table
     await db.execute('''
@@ -60,12 +59,12 @@ class DBConfig {
         product_id INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         price REAL NOT NULL,
-        status TINYINT NOT NULL DEFAULT 0,
+        created_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (transaction_id) REFERENCES TransactionRecord(id) ON DELETE CASCADE,
         FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE
       )
     ''');
-    // - status: 0 = pending, 1 = success, 2 = failed
 
     // Setting Table
     await db.execute('''
@@ -73,18 +72,9 @@ class DBConfig {
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         value TEXT NOT NULL,
-        created_time TEXT NOT NULL,
-        updated_time TEXT NOT NULL
+        created_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_time TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
-    ''');
-
-    await db.execute('''
-      INSERT INTO Product (item_code, name, price, stock_type, stock, created_time, updated_time)
-      VALUES ('P001', 'Product 1', 10000, 0, 100, '2021-01-01 00:00:00', '2021-01-01 00:00:00'),
-             ('P002', 'Product 2', 20000, 0, 100, '2021-01-01 00:00:00', '2021-01-01 00:00:00'),
-             ('P003', 'Product 3', 30000, 0, 100, '2021-01-01 00:00:00', '2021-01-01 00:00:00'),
-             ('P004', 'Product 4', 40000, 0, 100, '2021-01-01 00:00:00', '2021-01-01 00:00:00'),
-             ('P005', 'Product 5', 50000, 0, 100, '2021-01-01 00:00:00', '2021-01-01 00:00:00')
     ''');
   }
 }

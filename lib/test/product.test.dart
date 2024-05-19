@@ -6,7 +6,7 @@ void main() {
   group('ProductController Tests', () {
     test('selectAll returns empty list initially', () async {
       final ProductController productController = ProductController();
-      final List<Product> products = await productController.selectAll();
+      final List<Product> products = (await productController.selectAll()).cast<Product>();
       expect(products.length, 0);
     });
 

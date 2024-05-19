@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/payment/qris_payment_page.dart';
+import 'package:pos_portal/pages/home/payment/success_payment_page.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_total_transaksi.dart';
 import 'package:pos_portal/widgets/copy_clipboard.dart';
@@ -14,9 +16,13 @@ import 'package:pos_portal/widgets/topbar.dart';
 class PaymentMethodPage extends StatefulWidget {
   final int idTransaksi;
   final int totalTransaksi;
+  final int uangKembalian;
 
   const PaymentMethodPage(
-      {super.key, this.totalTransaksi = 10000, this.idTransaksi = 789567123});
+      {super.key,
+      required this.totalTransaksi,
+      required this.idTransaksi,
+      required this.uangKembalian});
 
   @override
   State<PaymentMethodPage> createState() => _PaymentMethodPageState();
@@ -53,19 +59,31 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
     return GestureDetector(
       onTap: () {
         if (title == 'QRIS') {
-          Navigator.push(
+          PersistentNavBarNavigator.pushNewScreen(
             context,
-            MaterialPageRoute(
-              builder: (context) => QrisPaymentPage(
-                transactionId: idTransaksi,
-                totalTransaksi: widget.totalTransaksi,
-              ),
+            screen: SuccessPaymentPage(
+              idTransaksi: widget.idTransaksi,
+              totalTransaksi: widget.totalTransaksi,
+              isQRIS: true,
             ),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
         }
-        // if (title == 'Tunai') {
-        //   _showDialogTunai();
-        // }
+        if (title == 'Tunai') {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: SuccessPaymentPage(
+              idTransaksi: widget.idTransaksi,
+              totalTransaksi: widget.totalTransaksi,
+              isTunai: true,
+              isUangPas: widget.uangKembalian == 0,
+              uangKembalian: widget.uangKembalian,
+            ),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        }
       },
       child: Card(
         margin: const EdgeInsets.only(top: 16),
@@ -104,18 +122,6 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _showDialogTunai() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return DialogTunai(
-          totalPesanan: widget.totalTransaksi,
-        );
-      },
     );
   }
 

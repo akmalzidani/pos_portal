@@ -7,6 +7,7 @@ class FloatingButtonDefault extends StatelessWidget {
   final String title;
   final bool isFilled;
   final bool isDisabled;
+  final bool isTransparent;
   final VoidCallback actionPressed;
   final String heroTag;
 
@@ -17,6 +18,7 @@ class FloatingButtonDefault extends StatelessWidget {
     required this.actionPressed,
     required this.heroTag,
     this.isDisabled = false,
+    this.isTransparent = false,
   });
 
   @override
@@ -33,10 +35,12 @@ class FloatingButtonDefault extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: isFilled
-                  ? (isDisabled ? MyColors.neutral : MyColors.primary)
+                  ? (isTransparent
+                      ? Colors.transparent
+                      : (isDisabled ? MyColors.neutral : MyColors.primary))
                   : Colors.white,
               border: Border.all(
-                color: isFilled ? Colors.transparent : MyColors.primary,
+                color: isFilled ? Colors.white : MyColors.primary,
                 width: 1.5,
               ),
             ),

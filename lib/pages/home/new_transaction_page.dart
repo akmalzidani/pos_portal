@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/payment/detail_payment_page.dart';
 import 'package:pos_portal/utils/colors.dart';
@@ -16,12 +17,12 @@ class NewTransactionPage extends StatefulWidget {
 }
 
 class _NewTransactionPageState extends State<NewTransactionPage> {
-  int selectedItemsCount = 0;
+  List<Map<String, dynamic>> selectedItems = [];
   int totalTransaksi = 0;
 
-  void updateSelectedItemsCount(int count, int total) {
+  void updateSelectedItemsCount(List<Map<String, dynamic>> items, int total) {
     setState(() {
-      selectedItemsCount = count;
+      selectedItems = items;
       totalTransaksi = total;
     });
   }
@@ -50,8 +51,9 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: CartDetail(
-        selectedItemsCount: selectedItemsCount,
+        selectedItemsCount: selectedItems.length,
         totalTransaksi: totalTransaksi,
+        selectedItems: selectedItems,
       ),
     );
   }
@@ -60,11 +62,13 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
 class CartDetail extends StatelessWidget {
   final int selectedItemsCount;
   final int totalTransaksi;
+  final List<Map<String, dynamic>> selectedItems;
 
   const CartDetail({
     Key? key,
     required this.selectedItemsCount,
     required this.totalTransaksi,
+    required this.selectedItems,
   }) : super(key: key);
 
   @override
@@ -153,13 +157,16 @@ class CartDetail extends StatelessWidget {
               ),
               onPressed: selectedItemsCount > 0
                   ? () {
-                      Navigator.push(
+                      PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailPaymentPage(
-                                  totalTransaksi: totalTransaksi,
-                                  transactionId: 123456,
-                                )),
+                        screen: DetailPaymentPage(
+                          totalTransaksi: totalTransaksi,
+                          transactionId: 123456,
+                          selectedItems: selectedItems,
+                        ),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
                       );
                     }
                   : null,

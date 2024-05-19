@@ -4,7 +4,7 @@ import 'package:pos_portal/utils/helpers.dart';
 import 'package:pos_portal/widgets/counter.dart';
 
 class CardList extends StatefulWidget {
-  final Function(int, int) onSelectionChanged;
+  final Function(List<Map<String, dynamic>>, int) onSelectionChanged;
 
   CardList({
     Key? key,
@@ -18,27 +18,43 @@ class CardList extends StatefulWidget {
 class _CardListState extends State<CardList> {
   late List<bool> isClickedList;
   late List<int> itemQuantities;
-  final int itemPrice = 10000;
-  int selectedCount = 0;
+  final List<Map<String, dynamic>> items = [
+    {'name': 'Es Lemon Tea', 'price': 10000},
+    {'name': 'Nasi Goreng', 'price': 20000},
+    {'name': 'Ayam Bakar', 'price': 25000},
+    {'name': 'Mie Goreng', 'price': 15000},
+    {'name': 'Es Teh Manis', 'price': 5000},
+    {'name': 'Kopi Hitam', 'price': 8000},
+    {'name': 'Soto Ayam', 'price': 18000},
+    {'name': 'Bakso', 'price': 12000},
+    {'name': 'Sate Ayam', 'price': 22000},
+    {'name': 'Gado-Gado', 'price': 14000},
+  ];
+
+  List<Map<String, dynamic>> selectedItems = [];
   int totalAmount = 0;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the isClickedList with default values
-    isClickedList = List.generate(10, (index) => false);
-    itemQuantities = List.generate(10, (index) => 1);
+    isClickedList = List.generate(items.length, (index) => false);
+    itemQuantities = List.generate(items.length, (index) => 1);
   }
 
   void updateSelectedCount() {
-    selectedCount = isClickedList.where((clicked) => clicked).length;
+    selectedItems = [];
     totalAmount = 0;
     for (int i = 0; i < isClickedList.length; i++) {
       if (isClickedList[i]) {
-        totalAmount += itemPrice * itemQuantities[i];
+        totalAmount += (items[i]['price'] as int) * itemQuantities[i];
+        selectedItems.add({
+          'name': items[i]['name'],
+          'price': items[i]['price'],
+          'quantity': itemQuantities[i]
+        });
       }
     }
-    widget.onSelectionChanged(selectedCount, totalAmount);
+    widget.onSelectionChanged(selectedItems, totalAmount);
   }
 
   @override
@@ -48,7 +64,7 @@ class _CardListState extends State<CardList> {
       height: MediaQuery.of(context).size.height * 0.72,
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final String itemName = "Es Lemon Tea";
+          final item = items[index];
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -61,13 +77,18 @@ class _CardListState extends State<CardList> {
               child: InkWell(
                 onTap: () {
                   setState(() {
-                    isClickedList[index] = !isClickedList[index];
+                    if (isClickedList[index]) {
+                      isClickedList[index] = false;
+                      itemQuantities[index] = 1;
+                    } else {
+                      isClickedList[index] = true;
+                    }
                     updateSelectedCount();
                   });
                 },
                 child: ListTile(
                   title: Text(
-                    itemName,
+                    item['name'],
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w500,
@@ -75,7 +96,7 @@ class _CardListState extends State<CardList> {
                     ),
                   ),
                   subtitle: Text(
-                    'Rp ${formatRupiah(itemPrice)}',
+                    'Rp ${formatRupiah(item['price'])}',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w700,
@@ -102,7 +123,7 @@ class _CardListState extends State<CardList> {
             ),
           );
         },
-        itemCount: 10, // Change this to the actual number of items you have
+        itemCount: items.length,
       ),
     );
   }

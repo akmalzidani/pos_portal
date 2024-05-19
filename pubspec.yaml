@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.9
   google_fonts: ^6.2.1
+  lottie: ^3.1.2
   persistent_bottom_nav_bar: ^5.0.2
   sqflite:
 
@@ -25,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/svg/
+    - assets/
   fonts:
     - family: Montserrat
       fonts:

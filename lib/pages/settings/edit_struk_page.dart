@@ -1,74 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:pos_portal/layouts/body_template.dart';
+import 'package:pos_portal/widgets/floating_button.dart';
+import 'package:pos_portal/widgets/input_field.dart';
 import 'package:pos_portal/widgets/save_button.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
-import '../../widgets/customTextField.dart';
-
 class EditStruk extends StatelessWidget {
-  const EditStruk({Key? key}) : super(key: key);
+  final TextEditingController headerController = TextEditingController();
+  final TextEditingController footerController = TextEditingController();
+  EditStruk({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: topBar(context: context, title: 'Edit Struk'),
       body: BodyTemplate(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 32,
-            ),
-            Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start, // Konten berada di kiri
-              children: [
-                Text(
-                  'Masukkan Header',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 10),
-                CustomTextField(
-                  controller:
-                      TextEditingController(), // Anda perlu menambahkan controller
-                  labelText: 'Isikan Header Disini',
-                  hintText: 'Isikan Header Disini',
-                ),
-              ],
-            ),
-            SizedBox(height: 20), // Spasi antara kolom
-            Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start, // Konten berada di kiri
-              children: [
-                Text(
-                  'Masukkan Footer',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 10),
-                CustomTextField(
-                  controller:
-                      TextEditingController(), // Anda perlu menambahkan controller
-                  labelText: 'Isikan Footer Disini',
-                  hintText: 'Isikan Footer Disini',
-                ),
-              ],
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InputField(
+                label: 'Masukkan Header Struk',
+                controller: headerController,
+                hintText: 'Isikan header disini',
+                isMultiLine: true,
+              ),
+              InputField(
+                label: 'Masukkan Footer Struk',
+                controller: headerController,
+                hintText: 'Isikan footer disini',
+                isMultiLine: true,
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ButtonSave(title: 'Simpan'),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingButtonDefault(
+        title: 'Simpan',
+        actionPressed: () {
+          if (headerController.text.isNotEmpty &&
+              footerController.text.isNotEmpty) {
+            // Save to database
+          }
+        },
+        isFilled: true,
+        isDisabled: !headerController.text.isNotEmpty &&
+            !footerController.text.isNotEmpty,
+        heroTag: 'saveHeaderFooterStruk',
+      ),
     );
   }
 }

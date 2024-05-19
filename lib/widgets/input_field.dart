@@ -11,6 +11,7 @@ class InputField extends StatefulWidget {
   final String? label;
   final bool? isWajibIsi;
   final bool isDuit;
+  final bool isMultiLine;
   late bool inputAngka;
   final bool? isExpanded;
   final String hintText;
@@ -26,6 +27,7 @@ class InputField extends StatefulWidget {
     this.isWajibIsi = false,
     required this.hintText,
     this.inputAngka = false,
+    this.isMultiLine = false,
   });
 
   @override
@@ -77,8 +79,14 @@ class _InputFieldState extends State<InputField> {
           expands: widget.isExpanded ?? false,
           controller: widget.controller,
           cursorColor: MyColors.primary,
-          keyboardType:
-              widget.inputAngka ? (TextInputType.number) : TextInputType.text,
+          minLines: widget.isMultiLine ? 2 : null,
+          maxLines: widget.isMultiLine ? 10 : null,
+          maxLength: widget.isMultiLine ? 500 : null,
+          keyboardType: widget.inputAngka
+              ? (TextInputType.number)
+              : (widget.isMultiLine
+                  ? TextInputType.multiline
+                  : TextInputType.text),
           onChanged: widget.inputAngka || widget.isDuit
               ? (value) {
                   if (value.isNotEmpty) {

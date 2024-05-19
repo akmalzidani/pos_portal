@@ -37,7 +37,9 @@ AppBar topBar(
           ? Transform.translate(
               offset: const Offset(-10, 0),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    debugPrint('Export');
+                  },
                   icon: SvgPicture.asset('assets/svg/icon_export.svg')),
             )
           : const SizedBox(),

@@ -1,22 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pos_portal/layouts/body_template.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:pos_portal/pages/product/product_page.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/input_field.dart';
 import 'package:pos_portal/widgets/topbar.dart';
+import 'package:pos_portal/controller/product.controller.dart';
+
+import '../../main.dart';
+import '../../models/Product.dart';
 
 enum JenisStokBarang { tidakterbatas, terbatas }
 
-class AddProductPage extends StatefulWidget {
-  const AddProductPage({super.key});
+class ProductAction extends StatefulWidget {
+  final int? idProduct;
+
+  const ProductAction({super.key, this.idProduct});
 
   @override
-  State<AddProductPage> createState() => _AddProductPageState();
+  State<ProductAction> createState() => _ProductActionState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _ProductActionState extends State<ProductAction> {
+  final ProductController _productController = ProductController();
   TextEditingController namaProdukController = TextEditingController();
   TextEditingController hargaProdukController = TextEditingController();
   TextEditingController stokProdukController = TextEditingController();
@@ -26,9 +33,35 @@ class _AddProductPageState extends State<AddProductPage> {
   JenisStokBarang? _character = JenisStokBarang.tidakterbatas;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.idProduct != null) {
+      _loadProduct().then((product) {
+        setState(() {
+          namaProdukController.text = product.name;
+          hargaProdukController.text = product.price.toInt().toString();
+          stokProdukController.text = product.stock.toString();
+          hargaProduk = product.price.toInt();
+          stokProduk = product.stock;
+          _character = product.stockType == 0
+              ? JenisStokBarang.tidakterbatas
+              : JenisStokBarang.terbatas;
+        });
+      });
+    }
+  }
+
+  Future<Product> _loadProduct() {
+    return _productController.selectById('id', widget.idProduct);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Tambah Produk', isCanBack: true),
+      appBar: topBar(
+          context: context,
+          title: widget.idProduct == null ? 'Tambah Produk' : 'Edit Produk',
+          isCanBack: true),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -41,7 +74,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     isImport: true,
                     onPressed: () {},
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   HeadingSection(title: 'Detail Produk'),
                   InputField(
                     controller: namaProdukController,
@@ -49,7 +82,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     isWajibIsi: true,
                     hintText: 'Masukkan Nama Produk',
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   InputField(
                     controller: hargaProdukController,
                     label: 'Harga Produk',
@@ -65,8 +98,8 @@ class _AddProductPageState extends State<AddProductPage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.0),
               child: Divider(
                 thickness: 4,
               ),
@@ -93,7 +126,7 @@ class _AddProductPageState extends State<AddProductPage> {
                         _character = value;
                       });
                     },
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     activeColor: MyColors.primary,
                   ),
                   RadioListTile<JenisStokBarang>(
@@ -112,12 +145,12 @@ class _AddProductPageState extends State<AddProductPage> {
                         _character = value;
                       });
                     },
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     activeColor: MyColors.primary,
                   ),
                   if (_character == JenisStokBarang.terbatas)
                     Container(
-                      margin: EdgeInsets.only(left: 54),
+                      margin: const EdgeInsets.only(left: 54),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.35,
                         child: InputField(
@@ -145,35 +178,56 @@ class _AddProductPageState extends State<AddProductPage> {
         child: FloatingButtonDefault(
           title: 'Simpan',
           heroTag: "addProduct",
-          actionPressed: (namaProdukController.text.isNotEmpty &&
-                  hargaProdukController.text.isNotEmpty)
-              ? (_character == JenisStokBarang.terbatas &&
-                      stokProdukController.text.isNotEmpty)
-                  ? () {}
-                  : (_character == JenisStokBarang.tidakterbatas)
-                      ? () {}
-                      : () {}
-              : () {},
+          actionPressed: () async {
+            if (isFilled) {
+              bool result =
+                  await _productController.insertOrUpadte(product.id, product);
+              if (result) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(widget.idProduct == null
+                        ? 'Produk berhasil ditambahkan'
+                        : 'Produk berhasil diubah'),
+                  ),
+                );
+                PersistentNavBarNavigator.pushNewScreen(context,
+                    screen: const MainScreen(initialIndex: 1), withNavBar: true);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(widget.idProduct == null
+                        ? 'Produk gagal ditambahkan'
+                        : 'Produk gagal diubah'),
+                  ),
+                );
+              }
+            }
+          },
           isFilled: true,
-          isDisabled: (namaProdukController.text.isNotEmpty &&
-                  hargaProdukController.text.isNotEmpty)
-              ? (_character == JenisStokBarang.terbatas &&
-                      stokProdukController.text.isNotEmpty)
-                  ? false
-                  : (_character == JenisStokBarang.tidakterbatas)
-                      ? false
-                      : true
-              : true,
+          isDisabled: !isFilled,
         ),
       ),
     );
   }
 
+  bool get isFilled =>
+      namaProdukController.text.isNotEmpty &&
+      hargaProdukController.text.isNotEmpty &&
+      (stokProdukController.text.isNotEmpty ||
+          _character == JenisStokBarang.tidakterbatas);
+
+  Product get product => Product(
+      id: widget.idProduct,
+      name: namaProdukController.text,
+      price: hargaProduk!.toDouble(),
+      stockType: _character == JenisStokBarang.tidakterbatas ? 0 : 1,
+      stock: stokProduk!);
+
   Container HeadingSection({required String title}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Text(title,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 18,
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w600)),

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:pos_portal/controller/product.controller.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/route/route.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/button.dart';
-import 'package:pos_portal/pages/product/add_product_page.dart';
+import 'package:pos_portal/pages/product/product_action.dart';
+import 'package:pos_portal/widgets/custom_dialog.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/topbar.dart';
+import 'package:pos_portal/widgets/card_product.dart';
+import 'package:pos_portal/models/Product.dart';
+import 'package:pos_portal/types/list_product.type.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -25,17 +30,78 @@ class _ProductPageState extends State<ProductPage>
     Tab(text: "Terlaris"),
   ];
   late TabController _tabController;
+  final ProductController _productController = ProductController();
+  List<Product> _products = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: tabs.length, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+    loadProducts(ProductType.all);
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _handleTabSelection() {
+    if (!_tabController.indexIsChanging) {
+      switch (_tabController.index) {
+        case 0:
+          loadProducts(ProductType.all);
+          break;
+        case 1:
+          loadProducts(ProductType.almostOutOfStock);
+          break;
+        case 2:
+          loadProducts(ProductType.bestSeller);
+          break;
+      }
+    }
+  }
+
+  void loadProducts(ProductType type) async {
+    final products = await _productController.selectWithType(type);
+    setState(() {
+      _products = products;
+    });
+  }
+
+  void _showConfirmDeleteDialog(int idProduct) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomConfirmationDialog(
+          title: 'Hapus Produk',
+          content: 'Apakah Anda yakin ingin menghapus produk ini?',
+          onConfirm: () async {
+            bool isSucceed = await _productController.delete(idProduct);
+            if (isSucceed) {
+              _handleTabSelection(); // reload products based on current tab
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Produk berhasil dihapus'),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Produk gagal dihapus'),
+                ),
+              );
+            }
+            Navigator.of(context).pop();
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -52,7 +118,7 @@ class _ProductPageState extends State<ProductPage>
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                 ),
                 Expanded(
                   child: TabBar(
@@ -65,6 +131,7 @@ class _ProductPageState extends State<ProductPage>
             ),
             Expanded(
               child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: [
                   buildTabContent(), // Content for "Semua" tab
@@ -83,7 +150,7 @@ class _ProductPageState extends State<ProductPage>
         actionPressed: () {
           PersistentNavBarNavigator.pushNewScreen(
             context,
-            screen: AddProductPage(),
+            screen: const ProductAction(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
@@ -95,48 +162,14 @@ class _ProductPageState extends State<ProductPage>
   Widget buildTabContent() {
     return SingleChildScrollView(
       child: Column(
-        children: [
-          CardHistory(),
-          // Add more widgets here if needed
-        ],
-      ),
-    );
-  }
-}
-
-class CardHistory extends StatelessWidget {
-  const CardHistory({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(top: 16),
-      elevation: 0,
-      color: MyColors.info,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              'assets/svg/icon_laris.svg',
-              width: 20,
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: const Text(
-                'Lihat Produk Terlarismu',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
+        children: _products.map((product) {
+          return GestureDetector(
+            onLongPress: () {
+              _showConfirmDeleteDialog(product.id!);
+            },
+            child: CardProduct(product: product),
+          );
+        }).toList(),
       ),
     );
   }

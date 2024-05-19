@@ -31,15 +31,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadProducts();
   }
 
-  Future<void> _loadProducts() async {
-    List<Product> loadedProducts = await _productController.selectAll();
-    for (Product product in loadedProducts) {
-      print(product.name);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

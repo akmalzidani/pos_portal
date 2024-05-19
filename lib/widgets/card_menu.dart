@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_portal/controller/product.controller.dart';
 import 'package:pos_portal/utils/colors.dart';
 
 class CardMenu extends StatefulWidget {
@@ -12,6 +13,19 @@ class CardMenu extends StatefulWidget {
 }
 
 class _CardMenuState extends State<CardMenu> {
+  final ProductController _productController = ProductController();
+  List<int> _infoProduct = [];
+
+  void _loadInfoProduct() async{
+    _infoProduct = await _productController.getInfoProduct();
+    print(_infoProduct);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInfoProduct();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,11 +35,11 @@ class _CardMenuState extends State<CardMenu> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           singleMenuCard(context,
-              title: 'Produk Menipis', value: '10', icon: 'menipis'),
+              title: 'Produk Menipis', value: _infoProduct[0].toString(), icon: 'menipis'),
           singleMenuCard(context,
-              title: 'Total Stok Barang', value: '10', icon: 'stok'),
+              title: 'Total Stok Barang', value: _infoProduct[1].toString(), icon: 'stok'),
           singleMenuCard(context,
-              title: 'Total Transaksi', value: '10', icon: 'transaksi'),
+              title: 'Total Transaksi', value: _infoProduct[2].toString(), icon: 'transaksi'),
         ],
       ),
     );
@@ -69,7 +83,7 @@ class _CardMenuState extends State<CardMenu> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
@@ -81,10 +95,10 @@ class _CardMenuState extends State<CardMenu> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/svg/icon_${icon}.svg',
+                  SvgPicture.asset('assets/svg/icon_$icon.svg',
                       width: 27.98, height: 24.49),
                   Container(
-                    margin: EdgeInsets.only(left: 8),
+                    margin: const EdgeInsets.only(left: 8),
                     child: Text(
                       value,
                       style: TextStyle(

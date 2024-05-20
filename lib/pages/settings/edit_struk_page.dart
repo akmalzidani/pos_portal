@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/input_field.dart';
-import 'package:pos_portal/widgets/save_button.dart';
+import 'package:pos_portal/widgets/snackbar.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
 class EditStruk extends StatelessWidget {
@@ -40,10 +40,14 @@ class EditStruk extends StatelessWidget {
       floatingActionButton: FloatingButtonDefault(
         title: 'Simpan',
         actionPressed: () {
-          if (headerController.text.isNotEmpty &&
-              footerController.text.isNotEmpty) {
-            // Save to database
-          }
+          if (headerController.text.isEmpty && footerController.text.isEmpty) {
+            showCustomSnackbar(
+              context: context,
+              message: 'Header dan Footer tidak boleh kosong',
+              title: 'Input tidak valid',
+              theme: SnackbarTheme.error,
+            );
+          } else {}
         },
         isFilled: true,
         isDisabled: !headerController.text.isNotEmpty &&

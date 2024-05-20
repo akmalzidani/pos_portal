@@ -7,6 +7,7 @@ import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/utils/helpers.dart';
 import 'package:pos_portal/widgets/card_list.dart';
 import 'package:pos_portal/widgets/search_field.dart';
+import 'package:pos_portal/widgets/snackbar.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
 class NewTransactionPage extends StatefulWidget {
@@ -169,7 +170,14 @@ class CartDetail extends StatelessWidget {
                             PageTransitionAnimation.cupertino,
                       );
                     }
-                  : null,
+                  : () {
+                      showCustomSnackbar(
+                        context: context,
+                        message: 'Pilih barang terlebih dahulu',
+                        title: 'Belum ada produk yang dipilih',
+                        theme: SnackbarTheme.error,
+                      );
+                    },
               child: Text(
                 'Bayar',
                 style: TextStyle(

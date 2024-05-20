@@ -5,6 +5,7 @@ import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/widgets/card_action.dart';
 import 'package:pos_portal/widgets/floating_button.dart';
 import 'package:pos_portal/widgets/input_field.dart';
+import 'package:pos_portal/widgets/snackbar.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
 enum JenisStokBarang { tidakterbatas, terbatas }
@@ -149,11 +150,29 @@ class _AddProductPageState extends State<AddProductPage> {
                   hargaProdukController.text.isNotEmpty)
               ? (_character == JenisStokBarang.terbatas &&
                       stokProdukController.text.isNotEmpty)
-                  ? () {}
+                  ? () {
+                      debugPrint(
+                          'Nama Produk: ${namaProdukController.text}, Harga Produk: $hargaProduk, Stok Produk: $stokProduk');
+                    }
                   : (_character == JenisStokBarang.tidakterbatas)
-                      ? () {}
-                      : () {}
-              : () {},
+                      ? () {
+                          debugPrint(
+                              'Nama Produk: ${namaProdukController.text}, Harga Produk: $hargaProduk, Stok Produk: Tidak Terbatas');
+                        }
+                      : () {
+                          showCustomSnackbar(
+                              context: context,
+                              title: 'Input Tidak Valid',
+                              message: 'Terdapat input yang kosong',
+                              theme: SnackbarTheme.error);
+                        }
+              : () {
+                  showCustomSnackbar(
+                      context: context,
+                      title: 'Input Tidak Valid',
+                      message: 'Terdapat input yang kosong',
+                      theme: SnackbarTheme.error);
+                },
           isFilled: true,
           isDisabled: (namaProdukController.text.isNotEmpty &&
                   hargaProdukController.text.isNotEmpty)

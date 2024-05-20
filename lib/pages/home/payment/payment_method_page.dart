@@ -61,7 +61,11 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
         if (title == 'QRIS') {
           PersistentNavBarNavigator.pushNewScreen(
             context,
-            screen: SuccessPaymentPage(
+            screen:
+                // QrisPaymentPage(
+                //     transactionId: widget.idTransaksi,
+                //     totalTransaksi: widget.totalTransaksi),
+                SuccessPaymentPage(
               idTransaksi: widget.idTransaksi,
               totalTransaksi: widget.totalTransaksi,
               isQRIS: true,

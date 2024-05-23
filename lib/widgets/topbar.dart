@@ -3,12 +3,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_portal/utils/colors.dart';
 
-AppBar topBar(
-    {required BuildContext context,
-    required String title,
-    bool isNeedActions = false,
-    bool popTilDrop = false,
-    bool isCanBack = false}) {
+AppBar topBar({
+  required BuildContext context,
+  required String title,
+  bool isNeedActions = false,
+  bool popTilDrop = false,
+  bool isCanBack = false,
+  Function?
+      onBackPressed, // Tambahkan parameter untuk menangani penekanan tombol kembali
+}) {
   return AppBar(
     centerTitle: true,
     leading: isCanBack
@@ -19,10 +22,15 @@ AppBar topBar(
               color: MyColors.primary,
             ),
             onPressed: () {
-              if (popTilDrop) {
-                Navigator.of(context).popUntil(ModalRoute.withName("/"));
+              // Panggil fungsi onBackPressed jika tersedia
+              if (onBackPressed != null) {
+                onBackPressed();
               } else {
-                Navigator.of(context).pop();
+                if (popTilDrop) {
+                  Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                } else {
+                  Navigator.of(context).pop();
+                }
               }
             },
           )

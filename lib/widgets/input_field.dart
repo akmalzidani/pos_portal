@@ -14,6 +14,7 @@ class InputField extends StatefulWidget {
   final bool isMultiLine;
   late bool inputAngka;
   final bool? isExpanded;
+  final Function(String)? onChanged;
   final String hintText;
   final TextEditingController controller;
 
@@ -28,6 +29,7 @@ class InputField extends StatefulWidget {
     required this.hintText,
     this.inputAngka = false,
     this.isMultiLine = false,
+    this.onChanged,
   });
 
   @override
@@ -93,9 +95,16 @@ class _InputFieldState extends State<InputField> {
                     final valueHarga = formatter.getUnformattedValue();
                     debugPrint('valueHarga ${valueHarga.toString()}');
                     widget.onNilaiAngkaChanged!(valueHarga as int? ?? 0);
+                    if (widget.onChanged != null) {
+                      widget.onChanged!(value);
+                    }
                   }
                 }
-              : null,
+              : (widget.onChanged != null)
+                  ? ((value) {
+                      widget.onChanged!(value);
+                    })
+                  : null,
           inputFormatters: widget.isDuit || widget.inputAngka
               ? <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly,

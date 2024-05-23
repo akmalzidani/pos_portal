@@ -5,15 +5,30 @@ import 'package:pos_portal/widgets/input_field.dart';
 import 'package:pos_portal/widgets/snackbar.dart';
 import 'package:pos_portal/widgets/topbar.dart';
 
-class EditStruk extends StatelessWidget {
-  final TextEditingController headerController = TextEditingController();
-  final TextEditingController footerController = TextEditingController();
+class EditStruk extends StatefulWidget {
   EditStruk({Key? key}) : super(key: key);
+
+  @override
+  State<EditStruk> createState() => _EditStrukState();
+}
+
+class _EditStrukState extends State<EditStruk> {
+  final TextEditingController headerController = TextEditingController();
+
+  final TextEditingController footerController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Edit Struk'),
+      appBar: topBar(
+        context: context,
+        title: 'Edit Struk',
+        isCanBack: true,
+        onBackPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          Navigator.of(context).pop();
+        },
+      ),
       body: BodyTemplate(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -25,12 +40,24 @@ class EditStruk extends StatelessWidget {
                 controller: headerController,
                 hintText: 'Isikan header disini',
                 isMultiLine: true,
+                onChanged: (p0) {
+                  setState(() {
+                    print(
+                        "foote contol : ${footerController.text} header contol : ${headerController.text}");
+                  });
+                },
               ),
               InputField(
                 label: 'Masukkan Footer Struk',
-                controller: headerController,
+                controller: footerController,
                 hintText: 'Isikan footer disini',
                 isMultiLine: true,
+                onChanged: (p0) {
+                  setState(() {
+                    print(
+                        "foote contol : ${footerController.text} header contol : ${headerController.text}");
+                  });
+                },
               ),
             ],
           ),
@@ -47,11 +74,27 @@ class EditStruk extends StatelessWidget {
               title: 'Input tidak valid',
               theme: SnackbarTheme.error,
             );
-          } else {}
+          } else if (footerController.text.isEmpty) {
+            showCustomSnackbar(
+              context: context,
+              message: 'Footer tidak boleh kosong',
+              title: 'Input tidak valid',
+              theme: SnackbarTheme.error,
+            );
+          } else if (headerController.text.isEmpty) {
+            showCustomSnackbar(
+              context: context,
+              message: 'Header tidak boleh kosong',
+              title: 'Input tidak valid',
+              theme: SnackbarTheme.error,
+            );
+          } else {
+            debugPrint('Terprint');
+          }
         },
         isFilled: true,
-        isDisabled: !headerController.text.isNotEmpty &&
-            !footerController.text.isNotEmpty,
+        isDisabled:
+            (headerController.text.isEmpty || footerController.text.isEmpty),
         heroTag: 'saveHeaderFooterStruk',
       ),
     );

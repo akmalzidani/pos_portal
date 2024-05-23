@@ -36,6 +36,10 @@ class _NewTransactionPageState extends State<NewTransactionPage> {
         context: context,
         title: 'Transaksi Baru',
         isCanBack: true,
+        onBackPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          Navigator.of(context).pop();
+        },
       ),
       body: BodyTemplate(
         child: Column(

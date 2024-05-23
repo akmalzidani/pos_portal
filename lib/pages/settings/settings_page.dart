@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/settings/edit_struk_page.dart';
 import 'package:pos_portal/utils/colors.dart';
@@ -54,10 +55,11 @@ class SettingPage extends StatelessWidget {
                 height: 24, // adjust the height as needed
               ),
               onTap: () {
-                // Navigate to EditStruk page
-                Navigator.push(
+                PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  MaterialPageRoute(builder: (context) => EditStruk()),
+                  screen: EditStruk(),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               },
             ),

@@ -29,7 +29,15 @@ class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(context: context, title: 'Tambah Produk', isCanBack: true),
+      appBar: topBar(
+        context: context,
+        title: 'Tambah Produk',
+        isCanBack: true,
+        onBackPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          Navigator.of(context).pop();
+        },
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,6 +57,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     label: 'Nama Produk',
                     isWajibIsi: true,
                     hintText: 'Masukkan Nama Produk',
+                    onChanged: (p0) {
+                      setState(() {
+                        print("Nama contol : ${namaProdukController.text}");
+                      });
+                    },
                   ),
                   SizedBox(height: 25),
                   InputField(
@@ -60,6 +73,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     onNilaiAngkaChanged: (value) {
                       setState(() {
                         hargaProduk = value;
+                      });
+                    },
+                    onChanged: (p0) {
+                      setState(() {
+                        print("Harga contol : ${hargaProdukController.text}");
                       });
                     },
                   ),
@@ -132,6 +150,12 @@ class _AddProductPageState extends State<AddProductPage> {
                               stokProduk = value;
                             });
                           },
+                          onChanged: (p0) {
+                            setState(() {
+                              print(
+                                  "stok contol : ${stokProdukController.text}");
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -174,15 +198,8 @@ class _AddProductPageState extends State<AddProductPage> {
                       theme: SnackbarTheme.error);
                 },
           isFilled: true,
-          isDisabled: (namaProdukController.text.isNotEmpty &&
-                  hargaProdukController.text.isNotEmpty)
-              ? (_character == JenisStokBarang.terbatas &&
-                      stokProdukController.text.isNotEmpty)
-                  ? false
-                  : (_character == JenisStokBarang.tidakterbatas)
-                      ? false
-                      : true
-              : true,
+          isDisabled: (namaProdukController.text.isEmpty ||
+              hargaProdukController.text.isEmpty),
         ),
       ),
     );

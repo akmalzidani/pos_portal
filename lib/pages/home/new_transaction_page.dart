@@ -5,7 +5,7 @@ import 'package:pos_portal/layouts/body_template.dart';
 import 'package:pos_portal/pages/home/payment/detail_payment_page.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/utils/helpers.dart';
-import 'package:pos_portal/widgets/card_list.dart';
+import 'package:pos_portal/widgets/card_list_new_transaction.dart';
 import 'package:pos_portal/widgets/search_field.dart';
 import 'package:pos_portal/widgets/snackbar.dart';
 import 'package:pos_portal/widgets/topbar.dart';

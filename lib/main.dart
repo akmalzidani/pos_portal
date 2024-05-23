@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/pages/home/home_page.dart';
 import 'package:pos_portal/pages/product/product_page.dart';
@@ -7,7 +8,11 @@ import 'package:pos_portal/pages/settings/settings_page.dart';
 import 'package:pos_portal/pages/transaction/transaction_page.dart';
 import 'package:pos_portal/utils/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Future.delayed(Duration(seconds: 2));
+  FlutterNativeSplash.remove();
   runApp(MainApp());
 }
 

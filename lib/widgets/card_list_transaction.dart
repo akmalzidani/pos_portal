@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_portal/utils/colors.dart';
 import 'package:pos_portal/utils/helpers.dart';
-import 'package:pos_portal/widgets/counter.dart';
 import 'package:pos_portal/widgets/label_transaction.dart';
 
 class CardListTransaction extends StatefulWidget {
+  final List<Map<String, dynamic>> transactions;
   CardListTransaction({
     Key? key,
+    required this.transactions,
   }) : super(key: key);
 
   @override
@@ -15,44 +16,6 @@ class CardListTransaction extends StatefulWidget {
 }
 
 class _CardListTransactionState extends State<CardListTransaction> {
-  final List<Map<String, dynamic>> transactions = [
-    {
-      'totalTransaksi': 100000,
-      'idTransaksi': '1234567890',
-      'tglTransaksi': '6 Mei 2024',
-      'jamTransaksi': '09.28',
-      'isBerhasil': true,
-    },
-    {
-      'totalTransaksi': 200000,
-      'idTransaksi': '0987654321',
-      'tglTransaksi': '5 Mei 2024',
-      'jamTransaksi': '15.45',
-      'isBerhasil': false,
-    },
-    {
-      'totalTransaksi': 300000,
-      'idTransaksi': '1122334455',
-      'tglTransaksi': '4 Mei 2024',
-      'jamTransaksi': '12.30',
-      'isBerhasil': true,
-    },
-    {
-      'totalTransaksi': 150000,
-      'idTransaksi': '6677889900',
-      'tglTransaksi': '3 Mei 2024',
-      'jamTransaksi': '08.00',
-      'isBerhasil': false,
-    },
-    {
-      'totalTransaksi': 250000,
-      'idTransaksi': '5566778899',
-      'tglTransaksi': '2 Mei 2024',
-      'jamTransaksi': '19.15',
-      'isBerhasil': true,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +23,7 @@ class _CardListTransactionState extends State<CardListTransaction> {
       height: MediaQuery.of(context).size.height * 0.72,
       child: ListView.builder(
         itemBuilder: (context, index) {
-          final transaction = transactions[index];
+          final transaction = widget.transactions[index];
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -158,7 +121,7 @@ class _CardListTransactionState extends State<CardListTransaction> {
             ),
           );
         },
-        itemCount: transactions.length,
+        itemCount: widget.transactions.length,
       ),
     );
   }

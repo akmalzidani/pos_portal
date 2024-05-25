@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pos_portal/pages/home/home_page.dart';
+import 'package:pos_portal/pages/onboarding.dart';
 import 'package:pos_portal/pages/product/product_page.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_portal/pages/settings/settings_page.dart';
@@ -27,7 +28,9 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScreen(),
+      debugShowCheckedModeBanner: false,
+      home: OnBoardingPage(),
+      // home: MainScreen(),
     );
   }
 }
